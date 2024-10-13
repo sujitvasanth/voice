@@ -34,7 +34,7 @@ const TokenConnect = ({
   const [token, setToken] = useState(config.settings.token);
 
   return (
-    <div className="flex left-0 top-0 w-full h-full bg-black/80 items-center justify-center text-center">
+    <div className="flex left-0 top-0 w-full h-full bg-white/80 items-center justify-center text-center">
       <div className="flex flex-col gap-4 p-8 bg-gray-950 w-full text-white border-t border-gray-900">
         <div className="flex flex-col gap-2">
           <input
