@@ -139,8 +139,20 @@ export default function App({ Component, pageProps }: AppProps) {
     { name: 'Sujit Vasanth2', id: '6c3ee2ae-dbfe-44a3-80af-41dcbfc694ff' },
   ];
   
-  function handleVoiceChange(voiceId: string) {
-    console.log("Selected voice:", voiceId); // Handle voice change
+function handleVoiceChange(voiceId: string) {
+    const selectedVoice = voices.find((voice) => voice.id === voiceId);
+    if (selectedVoice && room) {
+      const message = {
+        name: selectedVoice.name,
+        id: selectedVoice.id,
+      };
+
+      room.localParticipant.publishData(
+        JSON.stringify(message), // Convert message to a string
+        "reliable"
+      );
+      console.log("Sent voice change message:", message);
+    }
   }
 
   return (
