@@ -2,30 +2,30 @@ import { CloudProvider } from "@/cloud/useCloud";
 import "@livekit/components-styles/components/participant";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import VoiceDropdown from "../components/VoiceDropdown";
+import VoiceDropdown from "../components/VoiceDropdown"; // Import the dropdown
+import { useEffect, useState } from "react";
 
-export default function App({ Component, pageProps }: AppProps) {
-  const { voices } = pageProps;
+function App({ Component, pageProps }: AppProps) {
+  const voices = pageProps?.voices || []; // Get voices from pageProps or set as an empty array
 
   function handleVoiceChange(voiceId: string) {
-    console.log("Selected voice:", voiceId);
+    console.log("Selected voice:", voiceId); // Handle voice change, log the selected voice
   }
 
   return (
     <CloudProvider>
-      <VoiceDropdown voices={voices} onVoiceChange={handleVoiceChange} />
+      <VoiceDropdown voices={voices} onVoiceChange={handleVoiceChange} /> 
+      {/* Render the dropdown and pass voices */}
       <Component {...pageProps} />
     </CloudProvider>
   );
 }
 
-// Add getStaticProps to load voices at build time
 export async function getStaticProps() {
   const fs = require("fs");
   const path = require("path");
 
-  // Adjust the path to point to the parent directory
-  const filePath = path.join(process.cwd(), "../listofallvoices.txt");
+  const filePath = path.join(process.cwd(), "listofallvoices.txt");
   const fileContent = fs.readFileSync(filePath, "utf-8");
 
   const voices = fileContent.split("\n").map((line: string) => {
@@ -35,7 +35,9 @@ export async function getStaticProps() {
 
   return {
     props: {
-      voices,
+      voices, // Pass voices to the component as props
     },
   };
 }
+
+export default App;
