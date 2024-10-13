@@ -25,7 +25,8 @@ export async function getStaticProps() {
   const fs = require("fs");
   const path = require("path");
 
-  const filePath = path.join(process.cwd(), "listofallvoices.txt");
+  // Adjust the path to point to the parent directory
+  const filePath = path.join(process.cwd(), "../listofallvoices.txt");
   const fileContent = fs.readFileSync(filePath, "utf-8");
 
   const voices = fileContent.split("\n").map((line: string) => {
@@ -35,7 +36,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      voices, // Pass voices to the component as props
+      voices,
     },
   };
 }
