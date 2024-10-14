@@ -11,7 +11,7 @@ interface VoiceDropdownProps {
   room: Room;
 }
 
-const VoiceDropdown: React.FC<VoiceDropdownProps> = ({ voices, room }) => {
+const VoiceDropdown: React.FC<VoiceDropdownProps> = ({ voices, room }: VoiceDropdownProps) => {
   const [selectedVoice, setSelectedVoice] = useState<Voice | null>(null);
 
   const handleVoiceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
