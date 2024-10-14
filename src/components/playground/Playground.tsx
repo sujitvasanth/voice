@@ -16,11 +16,9 @@ const VoiceDropdown: React.FC<VoiceDropdownProps> = ({ voices, room }) => {
 
   const handleVoiceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const voiceId = event.target.value;
-    const selected = voices.find(voice => voice.id === voiceId);
+    const selected = voices.find(voice => voice.id === voiceId) || null; // Add fallback to null
 
-    if (selected) {
-      setSelectedVoice(selected);
-    }
+    setSelectedVoice(selected); // TypeScript now knows selected will never be undefined
 
     if (selected && room) {
       const message = {
