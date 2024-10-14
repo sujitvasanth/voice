@@ -7,6 +7,8 @@ import { AudioInputTile } from "@/components/config/AudioInputTile";
 import { ConfigurationPanelItem } from "@/components/config/ConfigurationPanelItem";
 import { NameValueRow } from "@/components/config/NameValueRow";
 import { PlaygroundHeader } from "@/components/playground/PlaygroundHeader";
+import VoiceDropdown from '@components/VoiceDropdown';
+
 import {
   PlaygroundTab,
   PlaygroundTabbedTile,
