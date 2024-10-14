@@ -14,7 +14,6 @@ const VoiceDropdown = ({ voices, room }) => {
         id: selected.id,
       };
 
-      // Publish the voice change message to the server
       room.localParticipant.publishData(
         JSON.stringify(message),
         "reliable"
@@ -35,4 +34,3 @@ const VoiceDropdown = ({ voices, room }) => {
 };
 
 export default VoiceDropdown;
-
