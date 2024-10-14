@@ -16,9 +16,9 @@ const VoiceDropdown: React.FC<VoiceDropdownProps> = ({ voices, room }) => {
 
   const handleVoiceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const voiceId = event.target.value;
-    const selected: Voice | null = voices.find(voice => voice.id === voiceId) || null; // Ensure selected is either Voice or null
+    const selected = voices.find(voice => voice.id === voiceId) || null;
 
-    setSelectedVoice(selected); // No undefined issue here
+    setSelectedVoice(selected as Voice | null);  // Type assertion as Voice or null
 
     if (selected && room) {
       const message = {
@@ -36,7 +36,7 @@ const VoiceDropdown: React.FC<VoiceDropdownProps> = ({ voices, room }) => {
 
   return (
     <select onChange={handleVoiceChange}>
-      <option value="">Select a voice</option> {/* Default option */}
+      <option value="">Select a voice</option>
       {voices.map((voice) => (
         <option key={voice.id} value={voice.id}>
           {voice.name}
