@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
+import { Room } from 'livekit-client'; // Import Room from LiveKit
 
-const VoiceDropdown = ({ voices, room }) => {
-  const [selectedVoice, setSelectedVoice] = useState(null);
+interface Voice {
+  name: string;
+  id: string;
+}
 
-  const handleVoiceChange = (event) => {
+interface VoiceDropdownProps {
+  voices: Voice[];
+  room: Room;
+}
+
+const VoiceDropdown: React.FC<VoiceDropdownProps> = ({ voices, room }) => {
+  const [selectedVoice, setSelectedVoice] = useState<Voice | null>(null);
+
+  const handleVoiceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const voiceId = event.target.value;
     const selected = voices.find(voice => voice.id === voiceId);
     setSelectedVoice(selected);
