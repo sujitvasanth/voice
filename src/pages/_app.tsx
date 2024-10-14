@@ -2,7 +2,6 @@ import { CloudProvider } from "@/cloud/useCloud";
 import "@livekit/components-styles/components/participant";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import VoiceDropdown from "../components/VoiceDropdown"; // Import the dropdown
 
 export default function App({ Component, pageProps }: AppProps) {
   const voices = [
@@ -138,27 +137,4 @@ export default function App({ Component, pageProps }: AppProps) {
     { name: 'Sujit Vasanth', id: '5d4a104a-2f6b-4eab-a437-889bcea7b3bf' },
     { name: 'Sujit Vasanth2', id: '6c3ee2ae-dbfe-44a3-80af-41dcbfc694ff' },
   ];
-  
-function handleVoiceChange(voiceId: string) {
-    const selectedVoice = voices.find((voice) => voice.id === voiceId);
-    if (selectedVoice && room) {
-      const message = {
-        name: selectedVoice.name,
-        id: selectedVoice.id,
-      };
-
-      room.localParticipant.publishData(
-        JSON.stringify(message), // Convert message to a string
-        "reliable"
-      );
-      console.log("Sent voice change message:", message);
-    }
-  }
-
-  return (
-    <CloudProvider>
-      <VoiceDropdown voices={voices} onVoiceChange={handleVoiceChange} />
-      <Component {...pageProps} />
-    </CloudProvider>
-  );
 }
