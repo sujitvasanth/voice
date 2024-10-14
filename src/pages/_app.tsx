@@ -3,12 +3,6 @@ import "@livekit/components-styles/components/participant";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 
-
-import { CloudProvider } from "@/cloud/useCloud";
-import "@livekit/components-styles/components/participant";
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-
 export default function App({ Component, pageProps }: AppProps) {
   const voices = [
     { name: 'Japanese Man Book', id: '97e7d7a9-dfaa-4758-a936-f5f844ac34cc' },
