@@ -62,8 +62,8 @@ export default function Playground({
     if (roomState === ConnectionState.Connected) {
       localParticipant.setCameraEnabled(config.settings.inputs.camera);
       localParticipant.setMicrophoneEnabled(config.settings.inputs.mic, {
-        echoCancellation: true,
-        noiseSuppression: true,
+        echoCancellation: false,
+        noiseSuppression: false,
         autoGainControl: true,
         channelCount: 1,
         sampleRate: 16000,});
