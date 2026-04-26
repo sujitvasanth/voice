@@ -2,19 +2,20 @@ import {
   LiveKitRoom,
   RoomAudioRenderer,
   StartAudio,
+  useConnectionState,
 } from "@livekit/components-react";
+import { ConnectionState } from "livekit-client";
 import { AnimatePresence, motion } from "framer-motion";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import { useCallback, useState } from "react";
-
+import { useCallback, useState, useMemo } from "react";
 import { PlaygroundConnect } from "@/components/PlaygroundConnect";
 import Playground from "@/components/playground/Playground";
 import { PlaygroundToast, ToastType } from "@/components/toast/PlaygroundToast";
 import { ConfigProvider, useConfig } from "@/hooks/useConfig";
 import { ConnectionMode, ConnectionProvider, useConnection } from "@/hooks/useConnection";
-import { useMemo } from "react";
 import { ToastProvider, useToast } from "@/components/toast/ToasterProvider";
+import { useWakeLock } from "@/hooks/useWakeLock";
 
 const themeColors = [
   "cyan",
@@ -28,6 +29,13 @@ const themeColors = [
 ];
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Lives inside LiveKitRoom so useConnectionState() has room context
+function WakeLock() {
+  const connectionState = useConnectionState();
+  useWakeLock(connectionState === ConnectionState.Connected);
+  return null;
+}
 
 export default function Home() {
   return (
@@ -44,8 +52,8 @@ export default function Home() {
 export function HomeInner() {
   const { shouldConnect, wsUrl, token, mode, connect, disconnect } =
     useConnection();
-  
-  const {config} = useConfig();
+
+  const { config } = useConfig();
   const { toastMessage, setToastMessage } = useToast();
 
   const handleConnect = useCallback(
@@ -59,11 +67,11 @@ export function HomeInner() {
     if (process.env.NEXT_PUBLIC_LIVEKIT_URL) {
       return true;
     }
-    if(wsUrl) {
+    if (wsUrl) {
       return true;
     }
     return false;
-  }, [wsUrl])
+  }, [wsUrl]);
 
   return (
     <>
@@ -117,6 +125,7 @@ export function HomeInner() {
             />
             <RoomAudioRenderer />
             <StartAudio label="Click to enable audio playback" />
+            <WakeLock />
           </LiveKitRoom>
         ) : (
           <PlaygroundConnect
