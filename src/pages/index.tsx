@@ -8,7 +8,7 @@ import { ConnectionState } from "livekit-client";
 import { AnimatePresence, motion } from "framer-motion";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useState, useMemo, useEffect, useRef } from "react";
 import { PlaygroundConnect } from "@/components/PlaygroundConnect";
 import Playground from "@/components/playground/Playground";
 import { PlaygroundToast, ToastType } from "@/components/toast/PlaygroundToast";
@@ -30,10 +30,33 @@ const themeColors = [
 
 const inter = Inter({ subsets: ["latin"] });
 
-// Lives inside LiveKitRoom so useConnectionState() has room context
 function WakeLock() {
   const connectionState = useConnectionState();
-  useWakeLock(connectionState === ConnectionState.Connected);
+  const connected = connectionState === ConnectionState.Connected;
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  useWakeLock(connected);
+
+  useEffect(() => {
+    if (!connected) {
+      audioRef.current?.pause();
+      audioRef.current = null;
+      return;
+    }
+    // Silent MP3 loop — keeps Android audio session alive when folded/locked
+    // volume=0.001 is inaudible but non-zero so Android doesn't optimise it away
+    const audio = new Audio(
+      "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//OEAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAABAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD/84TAAAAAAAAAAAAAAAAAAAAAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAUHAAAAAAAAASDs90UAAAAAAAAAAAAAAAAAAAAA//OEZAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcgCenp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6e//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAQqAAAAAAAAAnKVWRLFAAAAAAAAAAAAAAAAAAAAAP/zhGQAAANIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+    );
+    audio.loop = true;
+    audio.volume = 0.001;
+    audio.play().catch(() => {});
+    audioRef.current = audio;
+    return () => {
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, [connected]);
+
   return null;
 }
 
