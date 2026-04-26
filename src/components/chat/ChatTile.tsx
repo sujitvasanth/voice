@@ -31,15 +31,11 @@ export const ChatTile = ({ messages, accentColor, onSend }: ChatTileProps) => {
       <div
         ref={containerRef}
         className="overflow-y-auto"
-        style={{
-          height: `calc(100% - ${inputHeight}px)`,
-        }}
+        style={{ height: `calc(100% - ${inputHeight}px)` }}
       >
         <div className="flex flex-col min-h-full justify-end">
           {messages.map((message, index, allMsg) => {
-            const hideName =
-              index >= 1 && allMsg[index - 1].name === message.name;
-
+            const hideName = index >= 1 && allMsg[index - 1].name === message.name;
             return (
               <ChatMessage
                 key={index}
@@ -48,6 +44,7 @@ export const ChatTile = ({ messages, accentColor, onSend }: ChatTileProps) => {
                 message={message.message}
                 isSelf={message.isSelf}
                 accentColor={accentColor}
+                timestamp={message.timestamp}
               />
             );
           })}
