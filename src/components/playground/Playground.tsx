@@ -3,7 +3,7 @@
 
 import { LoadingSVG } from "@/components/button/LoadingSVG";
 import { ChatMessageType } from "@/components/chat/ChatTile";
-import { ColorPicker } from "@/components/colorPicker/ColorPicker";
+import { ColorPicker } from "@/components/colorPicker/ColorPicker";f
 import { AudioInputTile } from "@/components/config/AudioInputTile";
 import { ConfigurationPanelItem } from "@/components/config/ConfigurationPanelItem";
 import { NameValueRow } from "@/components/config/NameValueRow";
@@ -61,7 +61,12 @@ export default function Playground({
   useEffect(() => {
     if (roomState === ConnectionState.Connected) {
       localParticipant.setCameraEnabled(config.settings.inputs.camera);
-      localParticipant.setMicrophoneEnabled(config.settings.inputs.mic);
+      localParticipant.setMicrophoneEnabled(config.settings.inputs.mic, {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true,
+        channelCount: 1,
+        sampleRate: 16000,});
     }
   }, [config, localParticipant, roomState]);
 
